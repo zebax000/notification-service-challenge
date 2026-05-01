@@ -91,7 +91,6 @@ class NotificationService:
 
         self._channel.send(message)
         self._history.append(message)
-
 # Parte 2
 
 @dataclass
