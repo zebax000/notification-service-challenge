@@ -76,3 +76,12 @@ class MockChannel(NotificationChannel):
 
     def send(self, message: str) -> None:
         raise ChannelUnavailable("el canal mock no esta disponible")
+
+#punto 4#
+class NotificationService:
+    def __init__(self, _channel: NotificationChannel, ):
+        self._channel = NotificationChannel
+        self._history: list[str]
+
+    def send_notification(self, message: str) -> None:
+        if is_available() == True
