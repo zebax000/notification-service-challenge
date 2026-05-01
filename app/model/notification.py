@@ -9,28 +9,36 @@ class NotificationError(Exception):
     ...
 
 class ChannelUnavailable(NotificationError):
-    is_available = False
+    ...
 
 class DeliveryError(NotificationError):
     ...
 
 @runtime_checkable
-class NotificationChanel(ABC):
+class NotificationChannel(ABC):
+
+    @abstractmethod
     def send(self, message: str) -> None:
-        ...
+        pass
+
+    @abstractmethod
+    def get_channel_name(self) -> str:
+        pass
+
+    @abstractmethod
+    def is_available(self) -> bool:
+        pass
+
+class ConsoleChannel(NotificationChannel):
+
+    def send(self, message: str) -> None:
+        try:
+            print(message)
+        except Exception as e:
+            raise DeliveryError(f"Error al enviar por consola: {e}")
 
     def get_channel_name(self) -> str:
-        ...
+        return "console"
 
     def is_available(self) -> bool:
-        ...
-
-class NotificationChannel(ABC):
-    @abstractmethod
-    def send(self, message: str) -> None: ...
-
-    @abstractmethod
-    def get_channel_name(self) -> str: ...
-
-    @abstractmethod
-    def is_available(self) -> bool: ...
+        return True
