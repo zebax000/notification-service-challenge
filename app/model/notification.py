@@ -91,3 +91,17 @@ class NotificationService:
 
         self._channel.send(message)
         self._history.append(message)
+
+# Parte 2
+
+@dataclass
+class DeliveryReport:
+    channel_name: str
+    attempted: int
+    delivered: int
+    delivered_messages: list[str]
+
+    def success_rate(self) -> float:
+        if self.attempted == 0:
+            return 0.0
+        return self.delivered / self.attempted
