@@ -2,13 +2,16 @@ import os
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Protocol, runtime_checkable
+
+from decorator import append
+
 from app.services.util import generate_unique_id
 from abc import abstractmethod,ABC
 
 class NotificationError(Exception):
     ...
 
-class ChannelUnavailable(NotificationError):
+class ChannelUnavailableError(NotificationError):
     ...
 
 class DeliveryError(NotificationError):
@@ -58,7 +61,7 @@ class FileChannel(NotificationChannel):
 
     def send(self, message: str) -> None:
         if not self.is_available():
-            raise ChannelUnavailable(f"Canal no disponible: {self.get_channel_name()}")
+            raise ChannelUnavailableError(f"Canal no disponible: {self.get_channel_name()}")
 
         try:
             with open(self.file_path, "a", encoding="utf-8") as f:
@@ -75,13 +78,23 @@ class MockChannel(NotificationChannel):
         return False
 
     def send(self, message: str) -> None:
-        raise ChannelUnavailable("el canal mock no esta disponible")
+        raise ChannelUnavailableError("el canal mock no esta disponible")
 
 #punto 4#
 class NotificationService:
-    def __init__(self, _channel: NotificationChannel, ):
-        self._channel = NotificationChannel
-        self._history: list[str]
+    def __init__(self, _channel: NotificationChannel):
+        self._channel: NotificationChannel = _channel
+        self._history: list[str] = []
 
     def send_notification(self, message: str) -> None:
-        if is_available() == True
+        if not self._channel.is_available():
+            raise ChannelUnavailableError()
+
+        self._channel.send(message)
+
+        self._history.append(message)
+
+
+
+
+
