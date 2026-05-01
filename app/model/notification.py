@@ -76,3 +76,18 @@ class MockChannel(NotificationChannel):
 
     def send(self, message: str) -> None:
         raise ChannelUnavailable("el canal mock no esta disponible")
+
+
+    # Parte 2
+@dataclass
+class DeliveryReport:
+     channel_name: str
+     attempted: int
+     delivered: int
+     delivered_messages: list[str]
+
+     def success_rate (self) -> float:
+         def success_rate(self) -> float:
+             if self.attempted == 0:
+                 return 0.0
+             return self.delivered / self.attempted
